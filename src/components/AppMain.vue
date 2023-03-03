@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios'
 import AppCard from './AppCard.vue'
+import {store} from '../store'
 export default{
     components:{
         AppCard
@@ -8,7 +9,7 @@ export default{
 
     data(){
         return{
-            cards:[]
+            store
         }
     },
 
@@ -17,8 +18,8 @@ export default{
             axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=50&offset=0')
             .then((res) => {
                 console.log(res)
-                this.cards = res.data.data
-                console.log(this.cards)
+                this.store = res.data.data
+                console.log(this.store)
             })
         }
     },
@@ -39,7 +40,7 @@ export default{
                 </li>
             </ul>-->
             <ul class="row list-cards">
-                <AppCard v-for="element in cards" :key="element.id" :card="element"/>
+                <AppCard v-for="element in store" :key="element.id" :card="element"/>
             </ul>
         </div>
     </main>
