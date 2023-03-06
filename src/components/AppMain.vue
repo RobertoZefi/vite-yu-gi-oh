@@ -6,7 +6,7 @@ import Filters from './Filters.vue'
 export default{
     components:{
         AppCard,
-        Filters
+        Filters,
     },
 
     data(){
@@ -18,16 +18,19 @@ export default{
     methods:{
         fetchCards(){
             const search = this.store.nameCard
-            console.log(search)
-            axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=50&offset=0',{
+            const numSelected = this.store.numCard
+            console.log(this.store, numSelected)
+            axios.get( `https://db.ygoprodeck.com/api/v7/cardinfo.php?num=50&offset=0`,{
                 params:{
                     fname: search,
                 }
             })
             .then((res) => {
                 console.log(res)
-                this.store = res.data.data
+                this.store.cards = res.data.data
                 console.log(this.store)
+            }).catch((error)=>{
+                this.store.cards=[]
             })
         },
     },
@@ -42,11 +45,11 @@ export default{
     <main>
         <div class="container">
             <div>
-                <Filters @onSearch="fetchCards"/>
+                <Filters @onSearch="fetchCards" @changeNumCard="fetchCards"/>
             </div>
 
-            <div>
-                <p>Found </p>
+            <div class="num-card">
+                <p>Found: {{ store.cards.length }}</p>
             </div>
             <!--<ul class="row list-cards">
                 <li v-for="(element, index) in cards" >
@@ -55,7 +58,7 @@ export default{
                 </li>
             </ul>-->
             <ul class="row list-cards">
-                <AppCard v-for="element in store" :key="element.id" :card="element"/>
+                <AppCard v-for="element in store.cards" :key="element.id" :card="element"/>
             </ul>
         </div>
     </main>
@@ -79,6 +82,16 @@ main{
         width: calc(100% / 5 - 120px / 5);
         background-color: #D48F38;
         padding-bottom: 15px;
+    }
+}
+
+.num-card{
+    padding: 20px;
+    background-color: black;
+    color: white;
+
+    p{
+        font-size: 20px;
     }
 }
 </style>
