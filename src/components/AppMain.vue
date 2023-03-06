@@ -2,9 +2,11 @@
 import axios from 'axios'
 import AppCard from './AppCard.vue'
 import {store} from '../store'
+import Filters from './Filters.vue'
 export default{
     components:{
-        AppCard
+        AppCard,
+        Filters
     },
 
     data(){
@@ -15,13 +17,19 @@ export default{
 
     methods:{
         fetchCards(){
-            axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=50&offset=0')
+            const search = this.store.nameCard
+            console.log(search)
+            axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=50&offset=0',{
+                params:{
+                    fname: search,
+                }
+            })
             .then((res) => {
                 console.log(res)
                 this.store = res.data.data
                 console.log(this.store)
             })
-        }
+        },
     },
 
     created(){
@@ -33,6 +41,13 @@ export default{
 <template>
     <main>
         <div class="container">
+            <div>
+                <Filters @onSearch="fetchCards"/>
+            </div>
+
+            <div>
+                <p>Found </p>
+            </div>
             <!--<ul class="row list-cards">
                 <li v-for="(element, index) in cards" >
                     <img :src="element.card_images[0].image_url" alt="">

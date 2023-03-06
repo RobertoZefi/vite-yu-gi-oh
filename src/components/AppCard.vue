@@ -26,6 +26,7 @@ export default{
     margin-top: 20px;
     font-size: 20px;
     padding: 0 8px;
+    color: white;
 }
 
 .card-archetype{
