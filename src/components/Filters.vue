@@ -13,9 +13,9 @@ export default{
 <template>
     <input class="search-bar" type="text" placeholder="Name card..." @keyup.enter="$emit('onSearch')" v-model="store.nameCard">
     <select id="" @change="$emit('changeNumCard')" v-model="store.numCard">
-        <option value="">20</option>
-        <option value="">50</option>
-        <option value="">100</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
     </select>
 </template>
 
